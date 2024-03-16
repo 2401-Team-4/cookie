@@ -18,8 +18,10 @@ app.use(cookieParser());
 app.use((req, res, next) => {
   const sessionId = req.cookies.sessionId;
   if (!sessionId) {
-    console.log("No sessionId cookie on this request");
+    console.log("No sessionId cookie on this request or expired");
     const newSessionId = uuid.v4();
+    console.log("New sessionId: ", newSessionId);
+    console.log("--------------------------------------------------");
     res.cookie("sessionId", newSessionId, {
       maxAge: 1000 * 10,
       // Make sure to set 'sameSite' attribute to 'none' and 'secure' to 'true' if your client is served over HTTPS
@@ -28,7 +30,9 @@ app.use((req, res, next) => {
     });
     req.sessionId = newSessionId;
   } else {
-    console.log("SessionId cookie attached. Id: ", sessionId);
+    console.log("SessionId cookie attached.");
+    console.log("Id: ", sessionId);
+    console.log("--------------------------------------------------");
     req.sessionId = sessionId;
   }
   next();

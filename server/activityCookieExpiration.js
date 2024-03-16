@@ -24,6 +24,8 @@ app.use((req, res, next) => {
   if (!sessionId || currentTime - sessionId.lastActivity > SESSION_DURATION) {
     console.log("No sessionId cookie on this request or expired");
     const newSessionId = uuid.v4();
+    console.log("New sessionId: ", newSessionId);
+    console.log("--------------------------------------------------");
     res.cookie(
       "sessionId",
       { id: newSessionId, lastActivity: currentTime },
@@ -33,7 +35,9 @@ app.use((req, res, next) => {
     );
     req.sessionId = { id: newSessionId, lastActivity: currentTime };
   } else {
-    console.log("SessionId cookie attached. Id: ", sessionId.id);
+    console.log("Valid SessionId cookie attached");
+    console.log("Id: ", sessionId.id);
+    console.log("--------------------------------------------------");
     // Update last activity time
     sessionId.lastActivity = currentTime;
     res.cookie("sessionId", sessionId, {
